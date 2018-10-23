@@ -12,7 +12,7 @@ try{
 	    echo "jaja"
 	    }
 	stage('Email'){
-	    notifyStarted()
+ 	     notifyStarted()
 	}
 
 } catch (Exception e) {
