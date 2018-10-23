@@ -12,6 +12,12 @@ try{
 	    echo "jaja"
 	    }
 
+	post {
+    	     always {
+             	    emailext body: 'A Test EMail', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Test'
+    		    }
+	}
+
 } catch (Exception e) {
   	stage("mal"){
 	    echo "mal"
