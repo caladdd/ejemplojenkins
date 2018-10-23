@@ -1,8 +1,5 @@
-#!groovy
 
 node {
-
-    try {
     	stage('Checkout'){
             echo "Started"
 	    }
@@ -10,12 +7,5 @@ node {
             echo "HOla"
 	    echo "jaja"
 	    }
-
-    catch (err) {
-        echo "Build failed"
-
-        throw err
-    }
-
 }
 
