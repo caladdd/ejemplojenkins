@@ -16,8 +16,8 @@ try{
 		    notifyBuild('STARTED')
 		    stage('SonarQube analysis') {
    			 // requires SonarQube Scanner 2.8+
-			 def scannerHome = tool 'SonarQube Scanner 2.8';
-    			 withSonarQubeEnv('sonar') {
+			 def scannerHome = tool 'Sonar';
+    			 withSonarQubeEnv('sonarq') {
 			        echo "hola"
       			 	sh "${scannerHome}/bin/sonar-scanner"
   			 }			 
