@@ -1,5 +1,5 @@
-
-node {
+node{
+try{
     	stage('Checkout'){
             echo "Started"
 	    }
@@ -7,5 +7,11 @@ node {
             echo "HOla"
 	    echo "jaja"
 	    }
+
+} catch (Exception e) {
+  	stage("mal"){
+	    echo "mal"
+	}
+}
 }
 
