@@ -13,14 +13,18 @@ try{
 	    }
 	stage('Email'){
 		try {
-    		    notifyStarted()
-		    /* ... existing build steps ... */
- 		    notifySuccessful()
-  		} catch (e) {
-    		    currentBuild.result = "FAILED"
-    		    notifyFailed()
-    		    throw e
-  		}
+		notifyBuild('STARTED')
+		
+			/* ... existing build steps ... */
+
+		} catch (e) {
+		
+		  currentBuild.result = "FAILED"
+		  throw e
+		} finally {
+		
+		   notifyBuild(currentBuild.result)
+		}
 	}
 
 } catch (Exception e) {
