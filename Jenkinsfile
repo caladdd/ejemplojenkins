@@ -18,15 +18,14 @@ node{
 		stage('SonarQube analysis') {
 		    
 		    
-		    def props = readProperties file: 'sonar-project.properties'
-		    echo "jenkins-build-vars.properties=${props}"
+
 		    
    		    // requires SonarQube Scanner 2.8+
 		    def scannerHome = tool 'Sonarq';
     		    withSonarQubeEnv('sonarq') {
 			echo "hola"
 			echo "${scannerHome}"
-			sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectVersion='not provided' -Dsonar.sources=. -Dsonar.projectName='${props['SONARQUBE_PROJECTKEY']}' -Dsonar.projectKey='${props['SONARQUBE_PROJECTKEY']}' -Dsonar.branch='${props['SONARQUBE_BRANCH']}'"
+			sh "${scannerHome}/bin/sonar-scanne"
   		    }			 
 		}		
 		/* ... existing build steps ... */
