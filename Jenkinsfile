@@ -27,7 +27,6 @@ try{
 			        echo "hola"
 				echo "${scannerHome}"
 				sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectVersion='not provided' -Dsonar.sources=. -Dsonar.projectName='${props['SONARQUBE_PROJECTKEY']}' -Dsonar.projectKey='${props['SONARQUBE_PROJECTKEY']}' -Dsonar.branch='${props['SONARQUBE_BRANCH']}'"
-      			 	sh "${scannerHome}/bin/sonar-scanner"
   			 }			 
 		    }		
 			/* ... existing build steps ... */
