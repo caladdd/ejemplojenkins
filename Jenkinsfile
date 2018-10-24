@@ -19,7 +19,7 @@ try{
 			 def scannerHome = tool 'Sonar';
     			 withSonarQubeEnv('sonarq') {
 			        echo "hola"
-				sh "pwd ${scannerHome}"
+				echo "${scannerHome}"
       			 	sh "${scannerHome}/bin/sonar-scanner"
   			 }			 
 		    }		
