@@ -25,7 +25,7 @@ node{
     		    withSonarQubeEnv('Sonarq') {
 			echo "hola"
 			echo "${scannerHome}"
-			sh "${scannerHome}/bin/sonar-scanne"
+			sh "${scannerHome}/bin/sonar-scanner"
   		    }			 
 		}		
 		/* ... existing build steps ... */
