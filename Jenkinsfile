@@ -14,12 +14,19 @@ try{
 	stage('Email'){
 		try {
 		    notifyBuild('STARTED')
+
 		    stage('SonarQube analysis') {
+
+
+		    def props = readProperties file: 'sonar-project.properties'
+		    echo "jenkins-build-vars.properties=${props}"
+
    			 // requires SonarQube Scanner 2.8+
 			 def scannerHome = tool 'Sonarq';
     			 withSonarQubeEnv('sonarq') {
 			        echo "hola"
 				echo "${scannerHome}"
+				sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectVersion='not provided' -Dsonar.sources=. -Dsonar.projectName='${props['SONARQUBE_PROJECTKEY']}' -Dsonar.projectKey='${props['SONARQUBE_PROJECTKEY']}' -Dsonar.branch='${props['SONARQUBE_BRANCH']}'"
       			 	sh "${scannerHome}/bin/sonar-scanner"
   			 }			 
 		    }		
@@ -42,32 +49,6 @@ try{
 }
 }
 
-def notifyStarted() {
-  emailext (
-      subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-      body: """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
-        <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
-      recipientProviders: [[$class: 'DevelopersRecipientProvider']]
-    )
-}
-
-def notifySuccessful() {
-  emailext (
-      subject: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-      body: """<p>SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
-        <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
-      recipientProviders: [[$class: 'DevelopersRecipientProvider']]
-    )
-}
-
-def notifyFailed() {
-  emailext (
-      subject: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-      body: """<p>FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
-        <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
-      recipientProviders: [[$class: 'DevelopersRecipientProvider']]
-    )
-}
 
 def notifyBuild(String buildStatus = 'STARTED') {
   // build status of null means successful
@@ -99,4 +80,21 @@ def notifyBuild(String buildStatus = 'STARTED') {
       body: details,
       recipientProviders: [[$class: 'DevelopersRecipientProvider']]
     )
+}
+
+def getSonarBranchParameter(branch) {
+    sonarBranchParam = ""
+     if ("develop".equals(branch)) {
+        echo "branch is develop, sonar.branch not mandatory"
+    } else {
+        echo "branch is not develop"
+        sonarBranchParam="-Dsonar.branch=" + branch
+    }
+   return sonarBranchParam
+}
+
+def Properties getBuildProperties(filename) {
+    def properties = new Properties()
+    properties.load(new StringReader(readFile(filename)))
+    return properties
 }
