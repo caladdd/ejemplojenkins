@@ -15,10 +15,7 @@ node{
 	    try {
 		notifyBuild('STARTED')
 		
-		}		
-		
-		
-	    } catch (e) {
+	    }catch (e) {
 		
 		currentBuild.result = "FAILED"
 		throw e
