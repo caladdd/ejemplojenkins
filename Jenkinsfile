@@ -15,20 +15,8 @@ node{
 	    try {
 		notifyBuild('STARTED')
 		
-		stage('SonarQube analysis') {
-		    
-		    
-
-		    
-   		    // requires SonarQube Scanner 2.8+
-		    def scannerHome = tool 'Sonar1';
-    		    withSonarQubeEnv('Sonarq') {
-			echo "hola"
-			echo "${scannerHome}"
-			sh "${scannerHome}/bin/sonar-scanner"
-  		    }			 
 		}		
-		/* ... existing build steps ... */
+		
 		
 	    } catch (e) {
 		
@@ -53,24 +41,10 @@ def notifyBuild(String buildStatus = 'STARTED') {
     buildStatus =  buildStatus ?: 'SUCCESSFUL'
     
     // Default values
-    def colorName = 'RED'
-    def colorCode = '#FF0000'
     def subject = "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
     def summary = "${subject} (${env.BUILD_URL})"
     def details = """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
     <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>"""
-    
-    // Override default values based on build status
-    if (buildStatus == 'STARTED') {
-	color = 'YELLOW'
-	colorCode = '#FFFF00'
-    } else if (buildStatus == 'SUCCESSFUL') {
-	color = 'GREEN'
-	colorCode = '#00FF00'
-    } else {
-	color = 'RED'
-	colorCode = '#FF0000'
-    }
     
   // Send notifications
   emailext (
@@ -80,19 +54,3 @@ def notifyBuild(String buildStatus = 'STARTED') {
     )
 }
 
-def getSonarBranchParameter(branch) {
-    sonarBranchParam = ""
-    if ("develop".equals(branch)) {
-        echo "branch is develop, sonar.branch not mandatory"
-    } else {
-        echo "branch is not develop"
-        sonarBranchParam="-Dsonar.branch=" + branch
-    }
-    return sonarBranchParam
-}
-
-def Properties getBuildProperties(filename) {
-    def properties = new Properties()
-    properties.load(new StringReader(readFile(filename)))
-    return properties
-}
