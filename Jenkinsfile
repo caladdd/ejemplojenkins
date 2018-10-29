@@ -1,34 +1,43 @@
 node{
-    try{
-    	stage('Checkout'){
-	    checkout scm
-	    sh 'git log HEAD^..HEAD --pretty="%h %an - %s" > GIT_CHANGES'
-	    def lastChanges = readFile('GIT_CHANGES')
-	    echo "Started `${env.JOB_NAME}#${env.BUILD_NUMBER}`\n\n_The changes:_\n${lastChanges}"
-            echo "Started"
-	}
-	stage('Test'){	 
-            echo "HOla"
-	    echo "jaja"
-	}
-	stage('Email'){
-	    try {
-		notifyBuild('STARTED')
+    // try{
+    // 	stage('Checkout'){
+    // 	    checkout scm
+    // 	    sh 'git log HEAD^..HEAD --pretty="%h %an - %s" > GIT_CHANGES'
+    // 	    def lastChanges = readFile('GIT_CHANGES')
+    // 	    echo "Started `${env.JOB_NAME}#${env.BUILD_NUMBER}`\n\n_The changes:_\n${lastChanges}"
+    //         echo "Started"
+    // 	}
+    // 	stage('Test'){	 
+    //         echo "HOla"
+    // 	    echo "jaja"
+    // 	}
+    // 	stage('Email'){
+    // 	    try {
+    // 		notifyBuild('STARTED')
 		
-	    }catch (e) {
+    // 	    }catch (e) {
 		
-		currentBuild.result = "FAILED"
-		throw e
-	    } finally {
+    // 		currentBuild.result = "FAILED"
+    // 		throw e
+    // 	    } finally {
 		
-		notifyBuild(currentBuild.result)
-	    }
-	}
+    // 		notifyBuild(currentBuild.result)
+    // 	    }
+    // 	}
 	
-    } catch (Exception e) {
-  	stage("mal"){
-	    echo "mal"
-	}
+    // } catch (Exception e) {
+    // 	stage("mal"){
+    // 	    echo "mal"
+    // 	}
+    // }
+
+    stage('SonarQube analysis') {
+	def scannerHome = tool 'Sonar1';
+    	withSonarQubeEnv('Sonarq') {
+	    echo "hola"
+	    echo "${scannerHome}"
+	    sh "${scannerHome}/bin/sonar-scanner"
+  	}			 
     }
 }
 
