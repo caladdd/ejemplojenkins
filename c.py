@@ -1,8 +1,3 @@
-
-TopicsinTelematics-Project3/main.py
-a54b327 on May 24
-@agudelotmateo agudelotmateo Make seed random
-516 lines (457 sloc) 16.6 KB
 from pyspark import SparkContext
 from pyspark.sql import SparkSession
 from pyspark.sql.types import ArrayType, StringType
